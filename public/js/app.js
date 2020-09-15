@@ -1954,6 +1954,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   data: function data() {
@@ -1962,13 +1973,14 @@ __webpack_require__.r(__webpack_exports__);
       title: '',
       title2: 'demo test',
       edit: false,
+      checked: '',
       // listdata : [
       //     {
       //         title: '',
       //         complete: ''
       //     }
       // ]
-      list: []
+      list: {}
     };
   },
   mounted: function mounted() {
@@ -2055,8 +2067,14 @@ __webpack_require__.r(__webpack_exports__);
       axios["delete"]('api/todo/' + id).then(function (response) {
         _this4.getTodoData();
       }); //console.log('res', response);
-    } // console.log('id', id)
-
+    },
+    // console.log('id', id)
+    checkboxTodo: function checkboxTodo(todo) {
+      console.log(todo);
+      axios.post('/api/checkbox/' + todo.id, todo).then(function (response) {
+        console.log(response); //this.getTodoData();
+      });
+    }
   }
 });
 
@@ -37648,9 +37666,6 @@ var render = function() {
     _c("div", { staticClass: "container" }, [
       _c("form", [
         _c("div", { staticClass: "form-group" }, [
-          _c("h1"),
-          _c("br"),
-          _vm._v(" "),
           _c(
             "label",
             {
@@ -37704,7 +37719,7 @@ var render = function() {
               attrs: { type: "button" },
               on: { click: _vm.insertTodo }
             },
-            [_vm._v("Submit\n                ")]
+            [_vm._v("Submit\n                    ")]
           ),
           _vm._v(" "),
           _c(
@@ -37736,52 +37751,62 @@ var render = function() {
           { staticClass: "list-group list-group-flush" },
           _vm._l(_vm.list, function(todo, id) {
             return _c("div", { staticClass: "form-check" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: todo.complete,
-                    expression: "todo.complete"
-                  }
-                ],
-                staticClass: "form-check-input",
-                attrs: { type: "checkbox", id: "exampleCheck1", id: id },
-                domProps: {
-                  checked: Array.isArray(todo.complete)
-                    ? _vm._i(todo.complete, null) > -1
-                    : todo.complete
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = todo.complete,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && _vm.$set(todo, "complete", $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          _vm.$set(
-                            todo,
-                            "complete",
-                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                          )
-                      }
-                    } else {
-                      _vm.$set(todo, "complete", $$c)
-                    }
-                  }
-                }
-              }),
-              _vm._v(" "),
               _c(
                 "li",
                 { staticStyle: { "margin-top": "10px" }, attrs: { for: id } },
                 [
-                  _c("span", [_vm._v(_vm._s(todo.title))]),
+                  _c("span", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: todo.checkbox,
+                          expression: "todo.checkbox"
+                        }
+                      ],
+                      staticClass: "form-check-input",
+                      attrs: { type: "checkbox", id: "id" },
+                      domProps: {
+                        checked: Array.isArray(todo.checkbox)
+                          ? _vm._i(todo.checkbox, null) > -1
+                          : todo.checkbox
+                      },
+                      on: {
+                        change: [
+                          function($event) {
+                            var $$a = todo.checkbox,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(todo, "checkbox", $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    todo,
+                                    "checkbox",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(todo, "checkbox", $$c)
+                            }
+                          },
+                          function($event) {
+                            return _vm.checkboxTodo(todo)
+                          }
+                        ]
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticStyle: { "margin-right": "80px" } }, [
+                      _vm._v(_vm._s(todo.title))
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c(
                     "button",
@@ -37803,7 +37828,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Edit\n                        ")]
+                    [_vm._v("Edit\n                            ")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -37817,7 +37842,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("Delete\n                        ")]
+                    [_vm._v("Delete\n                            ")]
                   )
                 ]
               )

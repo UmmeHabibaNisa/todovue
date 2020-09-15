@@ -3,7 +3,8 @@
         <div class="container">
             <form>
                 <div class="form-group">
-                    <h1></h1><br>
+
+
                     <label class="input-group-text" for="exampleInputPassword1">Make your list</label>
                     <input style="margin-top:5px" type="text" name="title" class="form-control"
                            id="exampleInputPassword1" placeholder="what do u want to do today?"
@@ -14,14 +15,23 @@
                     <button v-show="edit" style="margin-top:10px" type="button" class="btn btn-primary" @click="updateTodo(title)">Update</button>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <div v-for="(todo,id) in list" class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1"
-                               v-model="todo.complete" :id="id">
-                        <li style="margin-top:10px" :for="id"><span>{{todo.title}}</span>
+                    <div  v-for="(todo,id) in list" class="form-check">
+<!--
+                        <input  type="checkbox" class="form-check-input"  id="checkbox"  @click="checkboxTodo"> &lt;!&ndash;v-model="todo.complete" :id="id"&ndash;&gt;
+-->
+                        <li style="margin-top:10px" :for="id">
+
+                           <span><input  type="checkbox" class="form-check-input" v-model="todo.checkbox" id="id"  @change="checkboxTodo(todo)">
+                              <div style=" margin-right: 80px;">{{todo.title}}</div>
+                           </span>
+<!--
+                            <span style=" margin-right: 80px;">{{todo.title}}</span>
+-->
                             <!-- <div v-for=" todo in something">
                                  <span v-show="!todo.edit">{{listdata.message}}</span>
                                  <input type="text" v-model="listdata.message" v-show="listdata.message">
                              </div>-->
+
                            <button v-show="!todo.edit" style="margin:5px;" type="button"
                                     class="btn btn-secondary" v-on:click="editTodo(todo)">Edit
                             </button>
@@ -29,6 +39,7 @@
                             <button type="button" class="btn btn-info"
                                     v-on:click="deleteTodo(todo.id)">Delete
                             </button>
+
                         </li>
 
                     </div>
@@ -54,13 +65,14 @@
                 title: '',
                 title2: 'demo test',
                 edit: false,
+                checked: '' ,
                 // listdata : [
                 //     {
                 //         title: '',
                 //         complete: ''
                 //     }
                 // ]
-                list: [],
+                list: {},
             }
 
         },
@@ -141,7 +153,19 @@
 
                     },
                 // console.log('id', id)
-    },
+        checkboxTodo(todo){
+               console.log(todo);
+
+            axios.post('/api/checkbox/' + todo.id, todo )
+                .then(response => {
+                    console.log( response);
+                    //this.getTodoData();
+
+                })
+
+        },
+        }
+
     }
 
 </script>

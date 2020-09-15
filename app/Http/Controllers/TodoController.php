@@ -43,7 +43,7 @@ class TodoController extends Controller
         // dd($request->title);
         $todo = new Todo;
         $todo->title = $request->title;
-        $todo->checkbox = 0;
+        $todo->checkbox =0;
         $todo->save();
         return response()->json($todo);
 
@@ -83,7 +83,7 @@ class TodoController extends Controller
         //dd($request);
         $todo = Todo::find($id);
         $todo->title = $request->title;
-        $todo->checkbox = 0;
+        $todo->checkbox =  $request->boolean('checkbox');
         $todo->save();
         return response()->json($todo);
 
@@ -101,5 +101,20 @@ class TodoController extends Controller
        $res=Todo::where('id',$id)->delete();
         return response()->json('successfully deleted');
 
+    }
+    public function checkBox(Request $request ,$id )
+    {
+
+//todo::where('id',$request->id)->update([
+//
+//    'checkbox'=>$request->checkbox,
+//]);
+//dd('done');
+
+            $check = Todo::find($request->id);
+            $check->checkbox = $request->checkbox;
+             $check->update();
+
+             return response()->json($check);
     }
 }

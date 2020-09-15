@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::resource('/todo', 'TodoController');
+Route::post('/checkbox/{id}', 'TodoController@checkBox') ;
 
 //Route::delete('api/todo/{id}', 'TodoController@destroy');
 
